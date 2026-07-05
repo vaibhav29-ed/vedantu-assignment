@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Spotify Privacy Hub — Interactive Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="status-bar">
+    <span>9:41</span>
+    <span>&#9632;&#9632;&#9632;</span>
+  </div>
+
+  <div class="screen" id="app">
+
+  
+    <div id="screen-home">
+      <div class="top-bar">
+        <div></div>
+        <div class="title">Privacy Hub</div>
+        <div class="spacer"></div>
+      </div>
+
+      <div class="hero">
+        <div class="icon">&#128737;</div>
+        <h1>Your data, your control</h1>
+        <p>Choose how Spotify uses your data. Your choices apply to your Spotify account.</p>
+      </div>
+
+      <div class="inline-banner">
+        <span class="b-icon">&#9888;</span>
+        <span class="b-text">Your consent was last reviewed 14 months ago. <strong>Please review your choices.</strong></span>
+        <button class="btn-primary banner-btn" onclick="showScreen('screen-reconsent')">Review</button>
+      </div>
+
+      <div class="section-label">Data Collection</div>
+
+      <div class="consent-item" onclick="showDetail('detail-listening')">
+        <div class="left">
+          <h4>Listening History</h4>
+          <p>Your music, podcasts, and listening patterns</p>
+        </div>
+        <div class="right">
+          <span class="detail">On</span>
+          <div class="toggle on" onclick="event.stopPropagation(); toggleConsent(this, 'Listening History')">
+            <div class="knob"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="consent-item" onclick="showDetail('detail-device')">
+        <div class="left">
+          <h4>Device &amp; Network Info</h4>
+          <p>Device type, OS, network provider, connection type</p>
+        </div>
+        <div class="right">
+          <span class="detail">On</span>
+          <div class="toggle on" onclick="event.stopPropagation(); toggleConsent(this, 'Device &amp; Network Info')">
+            <div class="knob"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="consent-item" onclick="showDetail('detail-location')">
+        <div class="left">
+          <h4>Location</h4>
+          <p>Approximate location for localised content &amp; trends</p>
+        </div>
+        <div class="right">
+          <span class="detail">On</span>
+          <div class="toggle on" onclick="event.stopPropagation(); toggleConsent(this, 'Location')">
+            <div class="knob"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="consent-item" onclick="showDetail('detail-thirdparty')">
+        <div class="left">
+          <h4>Third-Party Sharing</h4>
+          <p>Data shared with advertising and analytics partners</p>
+        </div>
+        <div class="right">
+          <span class="detail">Off</span>
+          <div class="toggle" onclick="event.stopPropagation(); toggleConsent(this, 'Third-Party Sharing')">
+            <div class="knob"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Your Data Rights</div>
+
+      <div class="rights-item" onclick="showScreen('screen-download')">
+        <span class="r-icon">&#128230;</span>
+        <div class="r-text">
+          <h4>Download My Data</h4>
+          <p>Export your listening history, playlists, and profile</p>
+        </div>
+        <span class="r-arrow">&#8250;</span>
+      </div>
+      <div class="rights-item" onclick="showScreen('screen-correct')">
+        <span class="r-icon">&#9998;</span>
+        <div class="r-text">
+          <h4>Correct My Info</h4>
+          <p>Update your name, email, and profile details</p>
+        </div>
+        <span class="r-arrow">&#8250;</span>
+      </div>
+      <div class="rights-item" onclick="showModal('modal-delete')">
+        <span class="r-icon">&#128465;</span>
+        <div class="r-text">
+          <h4>Delete Account &amp; Data</h4>
+          <p>Permanently delete your account and all associated data</p>
+        </div>
+        <span class="r-arrow">&#8250;</span>
+      </div>
+
+      <div class="section-label section-label-children">Children's Accounts</div>
+
+      <div class="child-card" onclick="showScreen('screen-child')">
+        <div class="row">
+          <div>
+            <h4>Ananya <span class="child-age">(14)</span></h4>
+            <p>Family plan &middot; Listening history paused</p>
+          </div>
+          <span class="status-badge badge-yellow">Pending consent</span>
+        </div>
+      </div>
+
+      <div class="withdraw-row">
+        <button class="btn btn-outline" onclick="showModal('modal-withdraw')">Withdraw All Consent</button>
+      </div>
+      <div class="footer-note">Privacy Hub &middot; Your choices under DPDP Act 2023</div>
+    </div>
+
+
+    <div id="screen-reconsent" style="display:none;">
+      <div class="top-bar">
+        <div></div>
+        <div class="title">Review Your Consent</div>
+        <div class="spacer"></div>
+      </div>
+
+      <div class="progress-steps">
+        <span class="step active"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+        <span class="step"></span>
+      </div>
+
+      <div id="reconsent-step-1">
+        <div class="hero hero-compact">
+          <div class="icon">&#127925;</div>
+          <h1>Listening History</h1>
+          <p>Spotify uses your listening history to create personalised recommendations, discover weekly playlists, and show you what's trending.</p>
+        </div>
+        <div class="reconsent-body">
+          <p class="reconsent-consequence-label">If you turn this off:</p>
+          <ul class="reconsent-list">
+            <li>Made For You playlists will stop updating</li>
+            <li>Your home screen will show generic charts</li>
+            <li>You can still search and play any music</li>
+          </ul>
+          <div class="btn-group">
+            <button class="btn btn-primary btn-flex" onclick="reconsentNext()">Keep On</button>
+            <button class="btn btn-secondary btn-flex" onclick="reconsentToggle(1, false); reconsentNext()">Turn Off</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="reconsent-step-2" style="display:none;">
+        <div class="hero hero-compact">
+          <div class="icon">&#128187;</div>
+          <h1>Device &amp; Network Info</h1>
+          <p>We collect device type, OS version, and network data to optimise streaming quality and fix technical issues.</p>
+        </div>
+        <div class="reconsent-body">
+          <p class="reconsent-consequence-label">If you turn this off:</p>
+          <ul class="reconsent-list">
+            <li>Audio quality may default to standard</li>
+            <li>App performance may be less optimised</li>
+            <li>Core playback remains unaffected</li>
+          </ul>
+          <div class="btn-group">
+            <button class="btn btn-primary btn-flex" onclick="reconsentNext()">Keep On</button>
+            <button class="btn btn-secondary btn-flex" onclick="reconsentToggle(2, false); reconsentNext()">Turn Off</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="reconsent-step-3" style="display:none;">
+        <div class="hero hero-compact">
+          <div class="icon">&#128205;</div>
+          <h1>Location</h1>
+          <p>Your approximate location helps us show local charts, events near you, and region-relevant content.</p>
+        </div>
+        <div class="reconsent-body">
+          <p class="reconsent-consequence-label">If you turn this off:</p>
+          <ul class="reconsent-list">
+            <li>Local charts and events won't be available</li>
+            <li>Region-specific content won't appear</li>
+            <li>Core playback remains unaffected</li>
+          </ul>
+          <div class="btn-group">
+            <button class="btn btn-primary btn-flex" onclick="reconsentNext()">Keep On</button>
+            <button class="btn btn-secondary btn-flex" onclick="reconsentToggle(3, false); reconsentNext()">Turn Off</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="reconsent-step-4" style="display:none;">
+        <div class="hero hero-compact">
+          <div class="icon">&#128279;</div>
+          <h1>Third-Party Sharing</h1>
+          <p>We share limited data with partners for targeted advertising (Free tier) and analytics. We never sell your data.</p>
+        </div>
+        <div class="reconsent-body">
+          <p class="reconsent-consequence-label">If you turn this off:</p>
+          <ul class="reconsent-list">
+            <li>Ads will be less relevant (Free tier)</li>
+            <li>No analytics data shared with partners</li>
+            <li>Core playback remains unaffected</li>
+          </ul>
+          <div class="btn-group">
+            <button class="btn btn-primary btn-flex" onclick="reconsentNext()">Keep On</button>
+            <button class="btn btn-secondary btn-flex" onclick="reconsentToggle(4, false); reconsentNext()">Turn Off</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="reconsent-step-done" style="display:none;">
+        <div class="hero" style="padding:24px 0;">
+          <div class="success-check">&#10003;</div>
+          <h1>Consent Saved</h1>
+          <p>Your preferences have been recorded. You can change them anytime in Privacy Hub.</p>
+        </div>
+        <div style="padding:12px 0;">
+          <div class="summary-card">
+            <div class="summary-row"><span>Listening History</span><span id="final-1" class="summary-on">On</span></div>
+            <div class="summary-row"><span>Device &amp; Network</span><span id="final-2" class="summary-on">On</span></div>
+            <div class="summary-row"><span>Location</span><span id="final-3" class="summary-on">On</span></div>
+            <div class="summary-row"><span>Third-Party Sharing</span><span id="final-4" class="summary-on">On</span></div>
+          </div>
+          <button class="btn btn-primary" onclick="showScreen('screen-home')">Done</button>
+        </div>
+      </div>
+    </div>
+
+ 
+    <div id="screen-detail" style="display:none;">
+      <div class="top-bar">
+        <button class="back" onclick="showScreen('screen-home')">&#8592;</button>
+        <div class="title" id="detail-title">Detail</div>
+        <div class="spacer"></div>
+      </div>
+      <div id="detail-content" style="padding:12px 0;"></div>
+    </div>
+
+ 
+    <div id="screen-download" style="display:none;">
+      <div class="top-bar">
+        <button class="back" onclick="showScreen('screen-home')">&#8592;</button>
+        <div class="title">Download My Data</div>
+        <div class="spacer"></div>
+      </div>
+      <div class="hero hero-compact">
+        <div class="icon">&#128230;</div>
+        <h1>Request Your Data</h1>
+        <p>Get a copy of your Spotify data in JSON or CSV format. We'll prepare it within 7 days.</p>
+      </div>
+      <div style="padding:8px 0;">
+        <label class="input-label">Select data to include</label>
+        <div class="pill-group">
+          <span class="pill pill-active" onclick="this.classList.toggle('pill-active')">Listening History</span>
+          <span class="pill" onclick="this.classList.toggle('pill-active')">Playlists</span>
+          <span class="pill" onclick="this.classList.toggle('pill-active')">Saved Songs</span>
+          <span class="pill" onclick="this.classList.toggle('pill-active')">Profile Info</span>
+        </div>
+        <label class="input-label">Format</label>
+        <div class="format-group">
+          <button class="btn btn-primary btn-sm" onclick="document.querySelectorAll('.format-group .btn').forEach(b=>b.className='btn btn-secondary btn-sm'); this.className='btn btn-primary btn-sm';">JSON</button>
+          <button class="btn btn-secondary btn-sm" onclick="document.querySelectorAll('.format-group .btn').forEach(b=>b.className='btn btn-secondary btn-sm'); this.className='btn btn-primary btn-sm';">CSV</button>
+        </div>
+        <button class="btn btn-primary" onclick="showToast('Request submitted. You will receive an email within 7 days.')">Submit Request</button>
+      </div>
+    </div>
+
+    <div id="screen-correct" style="display:none;">
+      <div class="top-bar">
+        <button class="back" onclick="showScreen('screen-home')">&#8592;</button>
+        <div class="title">Correct My Info</div>
+        <div class="spacer"></div>
+      </div>
+      <div class="hero hero-compact">
+        <div class="icon">&#9998;</div>
+        <h1>Update Your Details</h1>
+        <p>Your personal information as stored by Spotify.</p>
+      </div>
+      <div style="padding:8px 0;">
+        <div class="info-field">
+          <label class="field-label">Name</label>
+          <div class="field-value">Priya Sharma</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">Email</label>
+          <div class="field-value">priya.sharma@example.com</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">Phone</label>
+          <div class="field-value">+91 98765 43210</div>
+        </div>
+        <div class="info-field">
+          <label class="field-label">Date of Birth</label>
+          <div class="field-value">15 March 2001</div>
+        </div>
+        <p class="info-hint">To update your details, please edit in your Spotify account settings. Changes will reflect here within 24 hours.</p>
+        <button class="btn btn-secondary" onclick="showToast('Redirecting to account settings...')">Edit in Account Settings</button>
+      </div>
+    </div>
+
+
+    <div id="screen-child" style="display:none;">
+      <div class="top-bar">
+        <button class="back" onclick="showScreen('screen-home')">&#8592;</button>
+        <div class="title">Child Account</div>
+        <div class="spacer"></div>
+      </div>
+      <div class="hero hero-compact">
+        <div class="icon">&#127800;</div>
+        <h1>Ananya's Privacy Settings</h1>
+        <p class="child-warning"><strong>&#9888; Verifiable parental consent required</strong></p>
+      </div>
+
+      <div class="inline-banner child-banner">
+        <span class="b-icon">&#9888;</span>
+        <span class="b-text">Under DPDP Act, children's accounts need verifiable parental consent before any data processing. Please verify your identity to provide consent.</span>
+      </div>
+
+      <div style="padding:8px 0;">
+        <div class="verify-section">
+          <p class="verify-label">Verify your identity as parent/guardian:</p>
+          <button class="btn btn-primary verify-btn" onclick="showToast('Redirecting to DigiLocker for identity verification...')">&#128274; Verify via DigiLocker</button>
+          <button class="btn btn-secondary verify-btn" onclick="showToast('OTP sent to registered mobile number +91 XXXXX43210')">&#128241; Verify via OTP</button>
+        </div>
+
+        <div class="section-label">Data Collection Status</div>
+        <div class="consent-item">
+          <div class="left">
+            <h4>Listening History</h4>
+            <p>Currently paused until consent is given</p>
+          </div>
+          <span class="status-badge badge-yellow">Paused</span>
+        </div>
+        <div class="consent-item">
+          <div class="left">
+            <h4>Targeted Advertising</h4>
+            <p>Permanently disabled for child accounts</p>
+          </div>
+          <span class="status-badge badge-green">Disabled</span>
+        </div>
+        <div class="consent-item">
+          <div class="left">
+            <h4>Behavioural Tracking</h4>
+            <p>Prohibited under DPDP Act for minors</p>
+          </div>
+          <span class="status-badge badge-green">Disabled</span>
+        </div>
+        <div class="consent-item">
+          <div class="left">
+            <h4>Personalised Recommendations</h4>
+            <p>Disabled for child-safe experience</p>
+          </div>
+          <span class="status-badge badge-blue">Safe mode</span>
+        </div>
+      </div>
+
+      <div class="child-safe-info">
+        <p>When parental consent is provided, Ananya can access age-appropriate music with minimal data collection and no tracking or targeted ads.</p>
+      </div>
+
+      <button class="btn btn-outline" onclick="showModal('modal-revoke-child')">Revoke Parental Consent</button>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="modal-overlay" id="modal-delete">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div class="modal-icon">&#128465;</div>
+      <h3>Delete Account?</h3>
+      <p>This will permanently delete your account, playlists, saved music, and all associated data. This action cannot be undone.</p>
+      <p class="modal-legal">Your data will be erased within 30 days as per DPDP Act requirements. Some data may be retained for legal obligations.</p>
+    </div>
+    <button class="btn btn-danger" onclick="closeModal('modal-delete'); showToast('Deletion request submitted. Confirmation sent to your email.')">Request Deletion</button>
+    <button class="btn btn-secondary" onclick="closeModal('modal-delete')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-withdraw">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div class="modal-icon">&#9888;</div>
+      <h3>Withdraw All Consent?</h3>
+      <p>If you withdraw all consent:</p>
+      <ul class="modal-list">
+        <li>Personalised recommendations will stop</li>
+        <li>You'll see generic content and ads</li>
+        <li>You can still search and play music</li>
+        <li>Basic account functionality will remain</li>
+      </ul>
+      <p class="modal-legal">You can change your mind anytime in Privacy Hub.</p>
+    </div>
+    <button class="btn btn-danger" onclick="closeModal('modal-withdraw'); showToast('All consent withdrawn. Your choices have been saved.')">Withdraw All Consent</button>
+    <button class="btn btn-secondary" onclick="closeModal('modal-withdraw')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-revoke-child">
+  <div class="modal">
+    <div style="text-align:center;">
+      <div class="modal-icon">&#9888;</div>
+      <h3>Revoke Parental Consent?</h3>
+      <p>Ananya's account will switch to restricted mode. No further data will be collected. She can still stream music but without any personalisation.</p>
+    </div>
+    <button class="btn btn-danger" onclick="closeModal('modal-revoke-child'); showToast('Parental consent revoked for Ananya.')">Revoke Consent</button>
+    <button class="btn btn-secondary" onclick="closeModal('modal-revoke-child')">Cancel</button>
+  </div>
+</div>
+
+  <div id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
