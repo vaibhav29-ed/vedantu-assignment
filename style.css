@@ -1,0 +1,128 @@
+// ====== Screen Navigation ======
+function showScreen(id) {
+  document.querySelectorAll('.screen > div').forEach(function(d) {
+    d.style.display = 'none';
+  });
+  document.getElementById(id).style.display = 'block';
+}
+
+// ====== Consent Detail Screens ======
+var detailData = {
+  'detail-listening': {
+    title: 'Listening History',
+    desc: 'Your listening history helps Spotify create personalised recommendations like Discover Weekly and Release Radar. It includes songs, artists, albums, and podcasts you play or skip. This data is used for recommendations, analytics, and content personalisation.',
+    icon: '&#127925;'
+  },
+  'detail-device': {
+    title: 'Device & Network Info',
+    desc: 'We collect information about your device model, operating system, network type (WiFi/mobile data), and connection quality to optimise audio streaming and troubleshoot issues.',
+    icon: '&#128187;'
+  },
+  'detail-location': {
+    title: 'Location',
+    desc: 'Your approximate location (city/country level) helps us show local music charts, events near you, and region-relevant content. We never track precise GPS without permission.',
+    icon: '&#128205;'
+  },
+  'detail-thirdparty': {
+    title: 'Third-Party Sharing',
+    desc: 'Data shared with advertising and analytics platforms to serve relevant ads (Free tier) and measure campaign performance. We do not sell your personal data.',
+    icon: '&#128279;'
+  }
+};
+
+function showDetail(id) {
+  var data = detailData[id];
+  if (!data) return;
+  document.getElementById('detail-title').textContent = data.title;
+  document.getElementById('detail-content').innerHTML =
+    '<div class="hero hero-compact">' +
+      '<div class="icon">' + data.icon + '</div>' +
+      '<h1>' + data.title + '</h1>' +
+      '<p>' + data.desc + '</p>' +
+    '</div>' +
+    '<div style="padding:8px 0;">' +
+      '<div style="background:rgba(255,255,255,0.04); border-radius:12px; padding:14px;">' +
+        '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+          '<span style="font-size:15px;">Allow ' + data.title + '</span>' +
+          '<div class="toggle on" onclick="toggleConsent(this, \'' + data.title + '\')">' +
+            '<div class="knob"></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<button class="btn btn-primary" onclick="showScreen(\'screen-home\')">Done</button>';
+  document.querySelectorAll('.screen > div').forEach(function(d) {
+    d.style.display = 'none';
+  });
+  document.getElementById('screen-detail').style.display = 'block';
+}
+
+// ====== Toggle Switches ======
+function toggleConsent(el, label) {
+  el.classList.toggle('on');
+  var detail = el.closest('.consent-item');
+  if (detail) {
+    var detailSpan = detail.querySelector('.detail');
+    if (detailSpan) {
+      detailSpan.textContent = el.classList.contains('on') ? 'On' : 'Off';
+    }
+  }
+  if (el.closest('.modal')) return;
+  showToast(label + ': ' + (el.classList.contains('on') ? 'Enabled' : 'Disabled'));
+}
+
+// ====== Re-consent Flow ======
+var reconsentStep = 1;
+var reconsentChoices = { 1: true, 2: true, 3: true, 4: false };
+var reconsentSteps = ['reconsent-step-1', 'reconsent-step-2', 'reconsent-step-3', 'reconsent-step-4', 'reconsent-step-done'];
+
+function reconsentNext() {
+  document.getElementById(reconsentSteps[reconsentStep - 1]).style.display = 'none';
+  reconsentStep++;
+  if (reconsentStep <= 4) {
+    document.getElementById(reconsentSteps[reconsentStep - 1]).style.display = 'block';
+    document.querySelectorAll('#screen-reconsent .step').forEach(function(s, i) {
+      s.classList.toggle('done', i < reconsentStep - 1);
+      s.classList.toggle('active', i === reconsentStep - 1);
+    });
+  } else if (reconsentStep === 5) {
+    document.getElementById('reconsent-step-done').style.display = 'block';
+    for (var i = 1; i <= 4; i++) {
+      var el = document.getElementById('final-' + i);
+      el.textContent = reconsentChoices[i] ? 'On' : 'Off';
+      el.style.color = reconsentChoices[i] ? '#1DB954' : '#f44336';
+    }
+  }
+}
+
+function reconsentToggle(step, val) {
+  reconsentChoices[step] = val;
+}
+
+// ====== Toast Notifications ======
+var toastTimer;
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() {
+    t.style.display = 'none';
+  }, 3000);
+}
+
+// ====== Modals ======
+function showModal(id) {
+  document.getElementById(id).classList.add('show');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(function(m) {
+  m.addEventListener('click', function(e) {
+    if (e.target === m) m.classList.remove('show');
+  });
+});
