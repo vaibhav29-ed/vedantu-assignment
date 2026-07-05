@@ -1,4 +1,4 @@
-// ====== Screen Navigation ======
+
 function showScreen(id) {
   document.querySelectorAll('.screen > div').forEach(function(d) {
     d.style.display = 'none';
@@ -6,7 +6,7 @@ function showScreen(id) {
   document.getElementById(id).style.display = 'block';
 }
 
-// ====== Consent Detail Screens ======
+
 var detailData = {
   'detail-listening': {
     title: 'Listening History',
@@ -57,7 +57,7 @@ function showDetail(id) {
   document.getElementById('screen-detail').style.display = 'block';
 }
 
-// ====== Toggle Switches ======
+
 function toggleConsent(el, label) {
   el.classList.toggle('on');
   var detail = el.closest('.consent-item');
@@ -99,7 +99,7 @@ function reconsentToggle(step, val) {
   reconsentChoices[step] = val;
 }
 
-// ====== Toast Notifications ======
+
 var toastTimer;
 
 function showToast(msg) {
@@ -112,7 +112,7 @@ function showToast(msg) {
   }, 3000);
 }
 
-// ====== Modals ======
+
 function showModal(id) {
   document.getElementById(id).classList.add('show');
 }
