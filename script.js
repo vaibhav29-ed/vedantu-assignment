@@ -126,3 +126,4 @@ document.querySelectorAll('.modal-overlay').forEach(function(m) {
     if (e.target === m) m.classList.remove('show');
   });
 });
+//this is the java script code above 
